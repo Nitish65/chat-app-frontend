@@ -1,0 +1,41 @@
+#inner {
+  position: relative; /* make it a positioning context */
+  /* other existing styles for centering */
+}
+
+ #home button {
+  position: absolute;  /* position relative to #inner */
+  bottom: 5px;           /* align to bottom of #inner */
+  right: 5px;            /* align to right of #inner */
+  
+  border: none;
+  text-decoration: none;
+  background-color: transparent;
+  /* background: none; */
+  font-size: 0.8rem;
+  cursor: pointer;
+  outline: none;
+}
+
+ #home button:hover {
+    background-color: transparent;
+    color: blue;
+}
+
+  #inner .toggle {
+     
+        padding: 2.5px;
+    color: white;;
+    background-color: #2057cf; 
+    border: none;
+    box-shadow: 0px 0px 10px rgb(20, 117, 202);
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+#inner .toggle:hover {
+    background-color: rgb(13, 33, 212);
+}
+   
+

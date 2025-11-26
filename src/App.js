@@ -1,14 +1,21 @@
 
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 
 import Register from './Components/Register/Register';
+import ChatScreen from './Components/ChatScreen/ChatScreen';
 
 function App() {
   return (
-    <div className="App">
-      <Register/>
-      {/* <ChatScreen/> */}
-    </div>
+    <BrowserRouter>
+    <Routes>
+      <Route path='/' element={<Register/>} />
+      <Route path='/chat' element={<ChatScreen/>} />
+      
+
+    </Routes>
+    
+    </BrowserRouter>
   );
 }
 

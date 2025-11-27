@@ -5,7 +5,7 @@
 }
 
 h1 {
-  color: red;
+  color: #17527b;
   margin-bottom: 30px;
   font-size: 1.5rem;
 }
@@ -22,7 +22,7 @@ h1 {
   max-width: 400px;
   padding: 40px 20px;
   border-radius: 10px;
-  box-shadow: 0px 0px 18px 2px #b42637;
+box-shadow: 0px 0px 10px rgb(20, 117, 202);
   text-align: center;
   background-color: #fff;
 }
@@ -44,7 +44,7 @@ h1 {
 #inputs button {
   padding: 10px 20px;
   font-size: 1rem;
-  background-color: #9ac4e2;
+  background-color: #17527b;
   color: white;
   border: none;
   border-radius: 5px;
@@ -55,7 +55,7 @@ h1 {
   margin-top: 15px;
 }
 #inner button:hover {
-  background-color: #7aaecc;
+  background-color: #072f46;
 }
 
 @media screen and (max-width: 480px) {

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Register.css";
 import { useNavigate } from "react-router-dom";
+import Select from "../Select/Select";
 
 const Register = () => {
 
@@ -23,6 +24,7 @@ const Register = () => {
     <>
       <div id="outer">
         <div id="inner">
+          
           <h1>Register to create a room</h1>
           <form onSubmit={handleSubmit} >
             <div id="inputs">
@@ -39,7 +41,7 @@ const Register = () => {
                 value={username}
                 onChange={(e)=>setUsername(e.target.value)}
               />
-              <input
+              {/* <input
                 type="text"
                 name="room-name"
                 placeholder="Room Name"
@@ -50,10 +52,12 @@ const Register = () => {
                 pattern="^[A-Za-z_\-]+$"
                 value={roomname}
                 onChange={(e)=>setRoomname(e.target.value)}
-              />
+              /> */}
+              <Select value={roomname} onChange={setRoomname} />
               <button disabled={isDisabled} type="submit" >Register</button>
             </div>
           </form>
+        
         </div>
       </div>
     </>

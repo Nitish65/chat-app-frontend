@@ -1,17 +1,22 @@
 import './Select.css'
 import React from 'react'
 
-const Select = () => {
+const Select = ({ value, onChange }) => {
   return (
-    <div>
-        <select name="room-name" id="room-name" >
-          <option value="Maths">Maths</option>
-          <option value="English">English</option>
-          <option value="Telugu">Telugu</option>
-          <option value="Hindi">Hindi</option>
-        </select>
+    <div className="select-wrapper">
+      <select 
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="styled-select"
+      >
+        <option value="Select Room">Select Room</option>
+        <option value="React">React</option>
+        <option value="JavaScript">JavaScript</option>
+        <option value="Nodejs">Nodejs</option>
+        <option value="Java">Java</option>
+      </select>
     </div>
   )
 }
 
-export default Select
+export default Select;

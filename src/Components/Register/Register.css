@@ -53,10 +53,19 @@ box-shadow: 0px 0px 10px rgb(20, 117, 202);
   width: 50%;
   align-self: center;
   margin-top: 15px;
+  
 }
 #inner button:hover {
   background-color: #072f46;
 }
+
+#inputs button:disabled {
+  opacity: 0.50;
+  
+  cursor: not-allowed;
+}
+
+
 
 @media screen and (max-width: 480px) {
   #inner {

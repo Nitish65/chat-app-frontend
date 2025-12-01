@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./ChatScreen.css";
+import { io } from "socket.io-client"
+
+const SERVER_URL = "http://localhost:4000";
+
 
 export default function ChatScreen() {
   const location = useLocation();
@@ -12,6 +16,7 @@ export default function ChatScreen() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
+  const socketRef = useRef(null);
   const messagesEndRef = useRef(null);
 
   // Redirect if someone enters /chat directly
@@ -21,38 +26,45 @@ export default function ChatScreen() {
     }
   }, [username, roomname, navigate]);
 
+
+  useEffect(() => {
+    if (!username || !roomname) return;
+    // Connects client with the server with the provided url
+    socketRef.current = io(SERVER_URL, { transports: ["websocket"] });
+    // On successful connection it sends username and roomname
+    // and the server collects it in name and room.
+    socketRef.current.on("connect", () => {
+      socketRef.current.emit("join", { name: username, room: roomname })
+    });
+
+    // when message event is triggered, this will set the setMessages state
+    socketRef.current.on("message", (msg) => {
+      setMessages((prev) => [
+        ...prev, msg
+      ])
+    });
+    // disconnects user on unmount.
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+        socketRef.current = null;
+      }
+    };
+  }, [username, roomname]);
+
+
   // Auto scroll on messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Add WhatsApp-style join info
-  useEffect(() => {
-    if (username && roomname) {
-      setMessages((prev) => [
-        ...prev,
-        { type: "info", text: `${username} joined the room` }
-      ]);
-    }
-  }, [username, roomname]);
-
   const sendMessage = () => {
     if (!input.trim()) return;
-
-    setMessages((prev) => [...prev, { type: "sent", text: input }]);
-
-    // const useReply = input;
-    setInput("");
-
-    setTimeout(()=>{
-      const randomUser = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
-      const randomReplies = dummyReplies[Math.floor(Math.random() * dummyReplies.length)];
-
-      setMessages((prev) =>
-        [...prev, 
-          { type: "received", text:`${randomUser} : ${randomReplies}`}
-        ]);
-    },700)
+    if(socketRef.current && socketRef.current.connected){
+      socketRef.current.emit("sendMessage", input.trim());
+      setInput("");
+    }
+  
   };
 
   const handleKeyPress = (e) => {
@@ -60,17 +72,7 @@ export default function ChatScreen() {
   };
 
 
-  const fakeUsers = ["John", "Emma", "Lucas", "Sophie", "Mark"];
 
-const dummyReplies = [
-  "That's interesting!",
-  "Really? Tell me more.",
-  "I totally agree with you.",
-  "Hmm, I need to think about that.",
-  "Can you explain that again?",
-  "Nice!",
-  "Oh wow!"
-];
 
 
   return (
@@ -85,7 +87,9 @@ const dummyReplies = [
         {/* Message List */}
         <div className="message-list">
           {messages.map((msg, idx) => {
-            if (msg.type === "info") {
+            const isSystem = msg.user === "system";
+            const isMe = msg.user === username;
+            if (isSystem) {
               return (
                 <div key={idx} className="info-message">
                   {msg.text}
@@ -93,17 +97,12 @@ const dummyReplies = [
               );
             }
 
-            if (msg.type === "sent") {
-              return (
-                <div key={idx} className="message-sent">
-                  <div className="bubble">{msg.text}</div>
-                </div>
-              );
-            }
-
             return (
-              <div key={idx} className="message-received">
-                <div className="bubble">{msg.text}</div>
+              <div key={idx} className=
+                {isMe ? "message-sent" :
+                  "message-received"}>
+                <div className="bubble">
+                  {!isMe && <strong>{msg.user}: </strong>}{msg.text}</div>
               </div>
             );
           })}

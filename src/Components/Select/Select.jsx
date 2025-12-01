@@ -9,7 +9,7 @@ const Select = ({ value, onChange }) => {
         onChange={(e) => onChange(e.target.value)}
         className="styled-select"
       >
-        <option value="Select Room">Select Room</option>
+        <option value="">Select Room</option>
         <option value="React">React</option>
         <option value="JavaScript">JavaScript</option>
         <option value="Nodejs">Nodejs</option>
